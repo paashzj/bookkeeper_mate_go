@@ -4,10 +4,11 @@ import "github.com/paashzj/gutil"
 
 // bk config
 var (
-	ClusterEnable     bool
-	ClusterInit       bool
-	AdvertisedAddress string
-	ZkAddress         string
+	ClusterEnable      bool
+	ClusterInit        bool
+	AdvertisedAddress  string
+	ZkAddress          string
+	MetaDataServiceUri string
 )
 
 func init() {
@@ -15,4 +16,5 @@ func init() {
 	ClusterInit = gutil.GetEnvBool("CLUSTER_INIT", false)
 	AdvertisedAddress = gutil.GetEnvStr("BOOKKEEPER_ADVERTISED_ADDRESS", "localhost")
 	ZkAddress = gutil.GetEnvStr("ZK_ADDR", "")
+	MetaDataServiceUri = gutil.GetEnvStr("META_DATA_SERVICE_URI", "")
 }

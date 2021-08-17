@@ -23,7 +23,7 @@ func Config() error {
 		configProp.Set("useHostNameAsBookieID", "true")
 		configProp.Set("httpServerEnabled", "true")
 		configProp.Set("zkServers", config.ZkAddress)
-		configProp.Set("metadataServiceUri", "zk+hierarchical://"+config.ZkAddress+"/ledgers")
+		configProp.Set("metadataServiceUri", "zk+hierarchical://"+config.MetaDataServiceUri+"/ledgers")
 	}
 	return configProp.Write(path.BkConfig)
 }

@@ -7,17 +7,17 @@ import (
 
 // zookeeper
 var (
-	BkHome      = os.Getenv("BOOKKEEPER_HOME")
-	BkConfigDir = filepath.FromSlash(BkHome + "/conf")
-	BkConfig    = filepath.FromSlash(BkConfigDir + "/bk_server.conf")
-	BkOriginalConfig    = filepath.FromSlash(BkConfigDir + "/bk_server_original.conf")
+	BkHome           = os.Getenv("BOOKKEEPER_HOME")
+	BkConfigDir      = filepath.FromSlash(BkHome + "/conf")
+	BkConfig         = filepath.FromSlash(BkConfigDir + "/bk_server.conf")
+	BkOriginalConfig = filepath.FromSlash(BkConfigDir + "/bk_server_original.conf")
 )
 
 // mate
 var (
-	BkMatePath    = filepath.FromSlash(BkHome + "/mate")
-	BkScripts     = filepath.FromSlash(BkMatePath + "/scripts")
-	BkInitScript = filepath.FromSlash(BkScripts + "/init-bookkeeper.sh")
-	BkStartScript = filepath.FromSlash(BkScripts + "/start-bookkeeper.sh")
+	BkMatePath              = filepath.FromSlash(BkHome + "/mate")
+	BkScripts               = filepath.FromSlash(BkMatePath + "/scripts")
+	BkInitScript            = filepath.FromSlash(BkScripts + "/init-bookkeeper.sh")
+	BkStartScript           = filepath.FromSlash(BkScripts + "/start-bookkeeper.sh")
 	BkStartStandaloneScript = filepath.FromSlash(BkScripts + "/start-bookkeeper-standalone.sh")
 )
