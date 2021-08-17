@@ -19,7 +19,7 @@ func Config() error {
 	if !config.ClusterEnable {
 		configProp.Set("advertisedAddress", config.AdvertisedAddress)
 	} else {
-		configProp.Set("advertisedAddress", os.Getenv("HOSTNAME"+".bookkeeper"))
+		configProp.Set("advertisedAddress", os.Getenv("HOSTNAME")+".bookkeeper")
 		configProp.Set("useHostNameAsBookieID", "true")
 		configProp.Set("httpServerEnabled", "true")
 		configProp.Set("zkServers", config.ZkAddress)
