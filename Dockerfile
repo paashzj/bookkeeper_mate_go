@@ -14,6 +14,8 @@ COPY --from=build /opt/sh/compile/pkg/bookkeeper_mate /opt/sh/bookkeeper/mate/bo
 
 COPY config/bk_server_original.conf /opt/sh/bookkeeper/conf/bk_server_original.conf
 
+COPY config/common_mod.sh /opt/sh/bookkeeper/bin/common.sh
+
 WORKDIR /opt/sh/bookkeeper
 
 CMD ["/usr/local/bin/dumb-init", "bash", "-vx", "/opt/sh/bookkeeper/mate/scripts/start.sh"]
