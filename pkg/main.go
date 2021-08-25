@@ -6,6 +6,7 @@ import (
 	"bookkeeper_mate_go/pkg/path"
 	"bookkeeper_mate_go/pkg/util"
 	"fmt"
+	"github.com/paashzj/gutil"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
@@ -24,22 +25,25 @@ func main() {
 		}
 	}
 	if config.ClusterInit {
-		err := util.CallScript(path.BkInitScript)
+		stdout, stderr, err := gutil.CallScript(path.BkInitScript)
+		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
+		util.Logger().Error(fmt.Sprintf("bk server init failed %v", err))
 		if err != nil {
-			fmt.Println(fmt.Sprintf("bk server init failed %v", err))
-			os.Exit(1)
+			util.Logger().Error(fmt.Sprintf("bk server init failed %v", err))
 		} else {
 			os.Exit(0)
 		}
 	}
 	if config.ClusterEnable {
-		err := util.CallScript(path.BkStartScript)
+		stdout, stderr, err := gutil.CallScript(path.BkStartScript)
+		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
 		if err != nil {
 			util.Logger().Error("start bk server failed ", zap.Error(err))
 			os.Exit(1)
 		}
 	} else {
-		err := util.CallScript(path.BkStartStandaloneScript)
+		stdout, stderr, err := gutil.CallScript(path.BkStartStandaloneScript)
+		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
 		if err != nil {
 			util.Logger().Error("start bk server failed ", zap.Error(err))
 			os.Exit(1)
