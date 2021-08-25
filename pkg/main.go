@@ -27,7 +27,6 @@ func main() {
 	if config.ClusterInit {
 		stdout, stderr, err := gutil.CallScript(path.BkInitScript)
 		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
-		util.Logger().Error(fmt.Sprintf("bk server init failed %v", err))
 		if err != nil {
 			util.Logger().Error(fmt.Sprintf("bk server init failed %v", err))
 		} else {
