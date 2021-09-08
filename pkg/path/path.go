@@ -7,10 +7,12 @@ import (
 
 // zookeeper
 var (
-	BkHome           = os.Getenv("BOOKKEEPER_HOME")
-	BkConfigDir      = filepath.FromSlash(BkHome + "/conf")
-	BkConfig         = filepath.FromSlash(BkConfigDir + "/bk_server.conf")
-	BkOriginalConfig = filepath.FromSlash(BkConfigDir + "/bk_server_original.conf")
+	BkHome                     = os.Getenv("BOOKKEEPER_HOME")
+	BkConfigDir                = filepath.FromSlash(BkHome + "/conf")
+	BkConfig                   = filepath.FromSlash(BkConfigDir + "/bk_server.conf")
+	BkStandaloneConfig         = filepath.FromSlash(BkConfigDir + "/standalone.conf")
+	BkOriginalConfig           = filepath.FromSlash(BkConfigDir + "/bk_server_original.conf")
+	BkOriginalStandaloneConfig = filepath.FromSlash(BkConfigDir + "/standalone_original.conf")
 )
 
 // mate

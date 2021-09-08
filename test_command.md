@@ -1,18 +1,18 @@
 ### start
 ```bash
-docker run ttbb/bookkeeper:stand-alone
+docker run ttbb/bookkeeper:mate
 ```
 ### start with port expose
 ```bash
-docker run -p 2181:2181 -p 3181:3181 -p 4181:4181 -d ttbb/bookkeeper:stand-alone
+docker run -p 2181:2181 -p 3181:3181 -p 4181:4181 -d ttbb/bookkeeper:mate
 ```
 ### localhost
 ```bash
-docker run -e BOOKKEEPER_ADVERTISED_ADDRESS="localhost" ttbb/bookkeeper:stand-alone
+docker run -e BOOKKEEPER_ADVERTISED_ADDRESS="localhost" ttbb/bookkeeper:mate
 ```
 ### localhost, start with port expose
 ```bash
-docker run -p 2181:2181 -p 3181:3181 -p 4181:4181 -e BOOKKEEPER_ADVERTISED_ADDRESS="localhost" -e BOOKIE_ROOT_LOGGER="DEBUG,INFO,CONSOLE" ttbb/bookkeeper:stand-alone
+docker run -p 2181:2181 -p 3181:3181 -p 4181:4181 -e BOOKKEEPER_ADVERTISED_ADDRESS="localhost" -e BOOKIE_ROOT_LOGGER="DEBUG,INFO,CONSOLE" ttbb/bookkeeper:mate
 ```
 ### cluster
 ```bash

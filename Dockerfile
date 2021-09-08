@@ -13,6 +13,7 @@ COPY docker-build /opt/sh/bookkeeper/mate
 COPY --from=build /opt/sh/compile/pkg/bookkeeper_mate /opt/sh/bookkeeper/mate/bookkeeper_mate
 
 COPY config/bk_server_original.conf /opt/sh/bookkeeper/conf/bk_server_original.conf
+COPY config/standalone_original.conf /opt/sh/bookkeeper/conf/standalone_original.conf
 
 COPY config/common_mod.sh /opt/sh/bookkeeper/bin/common.sh
 

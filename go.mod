@@ -1,6 +1,6 @@
 module bookkeeper_mate_go
 
-go 1.16
+go 1.17
 
 require (
 	github.com/paashzj/gutil v0.0.3
