@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bookkeeper_mate_go/pkg/bk"
 	"bookkeeper_mate_go/pkg/config"
 	"bookkeeper_mate_go/pkg/path"
 	"bookkeeper_mate_go/pkg/util"
@@ -16,14 +15,6 @@ func main() {
 	util.Logger().Debug("this is a debug msg")
 	util.Logger().Info("this is a info msg")
 	util.Logger().Error("this is a error msg")
-	err := bk.Config()
-	if err != nil {
-		if config.ClusterInit {
-			fmt.Println(fmt.Sprintf("generate config failed %v", err))
-		} else {
-			util.Logger().Error("generate config failed ", zap.Error(err))
-		}
-	}
 	if config.ClusterInit {
 		stdout, stderr, err := gutil.CallScript(path.BkInitScript)
 		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
