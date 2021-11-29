@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bookkeeper_mate_go/pkg/bk"
 	"bookkeeper_mate_go/pkg/config"
 	"bookkeeper_mate_go/pkg/path"
 	"bookkeeper_mate_go/pkg/util"
@@ -20,20 +21,15 @@ func main() {
 		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
 		if err != nil {
 			util.Logger().Error(fmt.Sprintf("bk server init failed %v", err))
+			os.Exit(1)
 		} else {
 			os.Exit(0)
 		}
 	}
-	if config.ClusterEnable {
-		stdout, stderr, err := gutil.CallScript(path.BkStartScript)
-		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
-		if err != nil {
-			util.Logger().Error("start bk server failed ", zap.Error(err))
-			os.Exit(1)
-		}
+	if config.RemoteMode {
+		util.Logger().Info("Remote mode")
 	} else {
-		stdout, stderr, err := gutil.CallScript(path.BkStartStandaloneScript)
-		util.Logger().Error("shell result ", zap.String("stdout", stdout), zap.String("stderr", stderr))
+		err := bk.Start()
 		if err != nil {
 			util.Logger().Error("start bk server failed ", zap.Error(err))
 			os.Exit(1)
