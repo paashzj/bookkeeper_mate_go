@@ -22,4 +22,4 @@ COPY config/common_mod.sh /opt/sh/bookkeeper/bin/common.sh
 
 WORKDIR /opt/sh/bookkeeper
 
-CMD ["/usr/local/bin/dumb-init", "bash", "-vx", "/opt/sh/bookkeeper/mate/scripts/start.sh"]
+CMD ["/usr/bin/dumb-init", "bash", "-vx", "/opt/sh/bookkeeper/mate/scripts/start.sh"]
