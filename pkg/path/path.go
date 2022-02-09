@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-// zookeeper
+// bookkeeper
 var (
 	BkHome                     = os.Getenv("BOOKKEEPER_HOME")
 	BkConfigDir                = filepath.FromSlash(BkHome + "/conf")

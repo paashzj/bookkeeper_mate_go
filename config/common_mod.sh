@@ -85,11 +85,31 @@ NETTY_LEAK_DETECTION_LEVEL=${NETTY_LEAK_DETECTION_LEVEL:-"disabled"}
 NETTY_RECYCLER_MAXCAPACITY=${NETTY_RECYCLER_MAXCAPACITY:-"1000"}
 NETTY_RECYCLER_LINKCAPACITY=${NETTY_RECYCLER_LINKCAPACITY:-"1024"}
 
-DEFAULT_BOOKIE_GC_OPTS="-XX:+UseG1GC \
- -XX:MaxGCPauseMillis=10 \
- -XX:+ParallelRefProcEnabled \
- -XX:+DisableExplicitGC"
-DEFAULT_BOOKIE_GC_LOGGING_OPTS=""
+USING_JDK8=$(detect_jdk8)
+
+if [ "$USING_JDK8" -ne "1" ]; then
+   DEFAULT_BOOKIE_GC_OPTS="-XX:+UseG1GC \
+    -XX:MaxGCPauseMillis=10 \
+    -XX:+ParallelRefProcEnabled \
+    -XX:+DisableExplicitGC"
+   DEFAULT_BOOKIE_GC_LOGGING_OPTS=""
+else
+  DEFAULT_BOOKIE_GC_OPTS="-XX:+UseG1GC \
+    -XX:MaxGCPauseMillis=10 \
+    -XX:+ParallelRefProcEnabled \
+    -XX:+UnlockExperimentalVMOptions \
+    -XX:+DoEscapeAnalysis \
+    -XX:ParallelGCThreads=32 \
+    -XX:ConcGCThreads=32 \
+    -XX:G1NewSizePercent=50 \
+    -XX:+DisableExplicitGC \
+    -XX:-ResizePLAB"
+  DEFAULT_BOOKIE_GC_LOGGING_OPTS="-XX:+PrintGCDetails \
+    -XX:+PrintGCApplicationStoppedTime  \
+    -XX:+UseGCLogFileRotation \
+    -XX:NumberOfGCLogFiles=5 \
+    -XX:GCLogFileSize=64m"
+fi
 
 BOOKIE_MAX_HEAP_MEMORY=${BOOKIE_MAX_HEAP_MEMORY:-"1g"}
 BOOKIE_MIN_HEAP_MEMORY=${BOOKIE_MIN_HEAP_MEMORY:-"1g"}
@@ -101,7 +121,15 @@ BOOKIE_GC_LOGGING_OPTS=${BOOKIE_GC_LOGGING_OPTS:-"${DEFAULT_BOOKIE_GC_LOGGING_OP
 # default CLI JVM settings
 DEFAULT_CLI_GC_OPTS="-XX:+UseG1GC \
     -XX:MaxGCPauseMillis=10"
-DEFAULT_CLI_GC_LOGGING_OPTS=""
+if [ "$USING_JDK8" -ne "1" ]; then
+  DEFAULT_CLI_GC_LOGGING_OPTS=""
+else
+  DEFAULT_CLI_GC_LOGGING_OPTS="-XX:+PrintGCDetails \
+    -XX:+PrintGCApplicationStoppedTime  \
+    -XX:+UseGCLogFileRotation \
+    -XX:NumberOfGCLogFiles=5 \
+    -XX:GCLogFileSize=64m"
+fi
 
 CLI_MAX_HEAP_MEMORY=${CLI_MAX_HEAP_MEMORY:-"512M"}
 CLI_MIN_HEAP_MEMORY=${CLI_MIN_HEAP_MEMORY:-"256M"}
@@ -236,14 +264,22 @@ set_module_classpath() {
 build_bookie_jvm_opts() {
   LOG_DIR=$1
   GC_LOG_FILENAME=$2
-  echo "$BOOKIE_MEM_OPTS $BOOKIE_GC_OPTS $BOOKIE_GC_LOGGING_OPTS $BOOKIE_PERF_OPTS -Xlog:gc=info:file=${LOG_DIR}/${GC_LOG_FILENAME}::filecount=5,filesize=64m"
+  if [ "$USING_JDK8" -eq "1" ]; then
+    echo "$BOOKIE_MEM_OPTS $BOOKIE_GC_OPTS $BOOKIE_GC_LOGGING_OPTS $BOOKIE_PERF_OPTS -Xloggc:${LOG_DIR}/${GC_LOG_FILENAME}"
+  else
+    echo "$BOOKIE_MEM_OPTS $BOOKIE_GC_OPTS $BOOKIE_GC_LOGGING_OPTS $BOOKIE_PERF_OPTS -Xlog:gc=info:file=${LOG_DIR}/${GC_LOG_FILENAME}::filecount=5,filesize=64m"
+  fi
   return
 }
 
 build_cli_jvm_opts() {
   LOG_DIR=$1
   GC_LOG_FILENAME=$2
-  echo "$CLI_MEM_OPTS $CLI_GC_OPTS $CLI_GC_LOGGING_OPTS -Xlog:gc=info:file=${LOG_DIR}/${GC_LOG_FILENAME}::filecount=5,filesize=64m"
+  if [ "$USING_JDK8" -eq "1" ]; then
+    echo "$CLI_MEM_OPTS $CLI_GC_OPTS $CLI_GC_LOGGING_OPTS -Xloggc:${LOG_DIR}/${GC_LOG_FILENAME}"
+  else
+    echo "$CLI_MEM_OPTS $CLI_GC_OPTS $CLI_GC_LOGGING_OPTS -Xlog:gc=info:file=${LOG_DIR}/${GC_LOG_FILENAME}::filecount=5,filesize=64m"
+  fi
   return
 }
 
